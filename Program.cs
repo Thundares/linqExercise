@@ -5,6 +5,21 @@ namespace linqExercise
 {
     class Program
     {
+        static void CreateFile()
+        {
+            using(FileStream fs = new FileStream(Path.GetTempPath() + "file.txt", FileMode.CreateNew))
+            {
+                using(StreamWriter sw = new StreamWriter(fs))
+                {
+                                sw.WriteLine("Maria,maria@gmail.com,3200.00");
+                                sw.WriteLine("Alex,alex@gmail.com,1900.00");
+                                sw.WriteLine("Marco,marco@gmail.com,1700.00");
+                                sw.WriteLine("Bob,bob@gmail.com,3500.00");
+                                sw.WriteLine("Anna,anna@gmail.com,2800.00");
+                }
+            }
+                Console.WriteLine("Create File was successful");
+        }
         static void Main(string[] args)
         {
             Console.WriteLine("Create the file for the exercise? <y/n>");
@@ -15,18 +30,7 @@ namespace linqExercise
                 {
                     try
                     {
-                        using(FileStream fs = new FileStream(Path.GetTempPath() + "file.txt", FileMode.CreateNew))
-                        {
-                            using(StreamWriter sw = new StreamWriter(fs))
-                            {
-                                sw.WriteLine("Maria,maria@gmail.com,3200.00");
-                                sw.WriteLine("Alex,alex@gmail.com,1900.00");
-                                sw.WriteLine("Marco,marco@gmail.com,1700.00");
-                                sw.WriteLine("Bob,bob@gmail.com,3500.00");
-                                sw.WriteLine("Anna,anna@gmail.com,2800.00");
-                            }
-                        }
-                        Console.WriteLine("Create File was successful");
+                        CreateFile();
                     }
                     catch (IOException)
                     {
@@ -48,6 +52,8 @@ namespace linqExercise
                 using(StreamReader sr = new StreamReader(path))
                 {
                     Console.WriteLine("Loading was successful");
+                    Console.Write("Enter Salary: ");
+                    double salary = double.Parse(Console.ReadLine());
                 }
             }
             catch (IOException)

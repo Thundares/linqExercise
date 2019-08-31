@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using linqExercise.Entities;
 
 namespace linqExercise
 {
@@ -19,6 +22,13 @@ namespace linqExercise
                 }
             }
                 Console.WriteLine("Create File was successful");
+        }
+        static void Print<T>(IEnumerable<T> a)
+        {
+            foreach (T obj in a)
+            {
+                Console.WriteLine(obj);
+            }
         }
         static void Main(string[] args)
         {
@@ -47,19 +57,40 @@ namespace linqExercise
             Console.WriteLine("==================");
             Console.Write("Enter full file path: ");
             string path = Console.ReadLine();
+            List<Employee> employees = new List<Employee>();
             try
             {
                 using(StreamReader sr = new StreamReader(path))
                 {
                     Console.WriteLine("Loading was successful");
-                    Console.Write("Enter Salary: ");
-                    double salary = double.Parse(Console.ReadLine());
+                    while(!sr.EndOfStream)
+                    {
+                        string[] st = sr.ReadLine().Split(",");
+                        employees.Add(new Employee(st[0], st[1], double.Parse(st[2])));
+                    }
                 }
             }
             catch (IOException)
             {
                 throw new IOException("Could not load the file");
             }
+            Console.Write("Enter Salary: ");
+            double salary = double.Parse(Console.ReadLine());
+
+            var r1 = 
+                from E in employees
+                where E.Salary > salary
+                select E.Email;
+
+            Console.WriteLine("Email of people whose salary is more than {0}:", salary);
+            Print(r1);
+
+            var r2 =
+                from E in employees
+                where E.Name[0] == 'M'
+                select E.Salary;
+
+            Console.Write("Sum of salalry of people whose name start with 'M': " + r2.Sum());
         }
     }
 }
